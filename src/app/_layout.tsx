@@ -9,6 +9,11 @@ export default function TabLayout() {
         options={{ title: 'Início' }}
       />
 
+       <Drawer.Screen
+        name="(tabs)"
+        options={{ title: 'Filmes' }}
+      />
+
       <Drawer.Screen
         name="user"
         options={{ title: 'User' }}
