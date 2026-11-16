@@ -5,8 +5,8 @@ import colors from '../Constants/Colors';
 export default function Sobre() {
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>Sobre</Text>
+      <View style={styles.content}>
+
       </View>
     </SafeAreaView>
   );
@@ -16,11 +16,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: 20,
   },
-  title: {
-    color: colors.text,
-    fontSize: 20,
-    fontWeight: '700',
+  content: {
+    padding: 24,
   },
+
 });

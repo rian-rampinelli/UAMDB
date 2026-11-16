@@ -4,7 +4,7 @@ import colors from '../../Constants/Colors';
 
 export default function TabLayout() {
   return (
-    <Tabs initialRouteName="filmes" screenOptions={{
+    <Tabs screenOptions={{
       headerShown: false,
       tabBarStyle: {
         backgroundColor: colors.navigation,
