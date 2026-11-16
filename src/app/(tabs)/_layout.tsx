@@ -4,7 +4,7 @@ import colors from '../../Constants/Colors';
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{
+    <Tabs initialRouteName="filmes" screenOptions={{
       headerShown: false,
       tabBarStyle: {
         backgroundColor: colors.navigation,
@@ -14,7 +14,7 @@ export default function TabLayout() {
     }}>
       <Tabs.Screen
         name="filmes"
-        options={{ title: 'Filmes', tabBarIcon: ({ size }) => <Ionicons name="film" color="#FFFFFF" size={size} /> }}
+        options={{ title: 'Início', tabBarIcon: ({ size }) => <Ionicons name="home" color="#FFFFFF" size={size} /> }}
       />
 
       <Tabs.Screen

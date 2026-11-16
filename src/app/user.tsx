@@ -14,7 +14,7 @@ export default function User() {
           </View>
 
           <View style={styles.profileDetails}>
-            <Text style={styles.title}>Não autenticado</Text>
+            <Text style={styles.name}>Não autenticado</Text>
 
             <View style={styles.stats}>
               <View style={styles.statItem}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 12,
   },
-  title: {
+  name: {
     color: colors.text,
     fontSize: 18,
     fontWeight: '700',
