@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   loginHint: {
-    marginTop: 30,
+    marginTop: 35,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
