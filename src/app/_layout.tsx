@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import { Text } from 'react-native';
-import colors from '../Constants/Colors';
+import colors from '../constants/Colors';
 
 export default function DrawerLayout() {
   return (
