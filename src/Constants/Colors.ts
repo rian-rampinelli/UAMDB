@@ -1,6 +1,6 @@
 const colors = {
   background: '#1C1C1C',
-  navigation: '#151515',
+  navigation: '#1C1C1C',
   surface: '#262626',
 
   primary: '#E87936',
