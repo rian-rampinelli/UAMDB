@@ -17,3 +17,21 @@ export async function searchMedia(name: string) {
 
   return response.json();
 }
+
+export async function searchNowPlaying() {
+  const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?page=1', {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    }
+  }
+  );
+  if (!response.ok) {
+    throw new Error('Erro ao buscar mídias');
+  }
+
+  return response.json();
+
+
+}

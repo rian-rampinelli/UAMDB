@@ -8,3 +8,10 @@ export type MediaResult = {
     known_for_department?: string;
     overview?: string;
 };
+
+export type NowPlayingMovie = {
+    id: number;
+    title: string;
+    poster_path: string | null;
+   
+};
