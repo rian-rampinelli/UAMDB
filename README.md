@@ -9,7 +9,7 @@ Aplicativo de catálogo de filmes desenvolvido com React Native.
 ## Tecnologias/informações
 - React-native
 - Expo
-- TMDB API https://developer.themoviedb.org/reference/getting-started
+- [TMDB API](https://developer.themoviedb.org/reference/getting-started)
 - Drawer e Tab navigations
 - SafeAreaView
 - Vector Icons
