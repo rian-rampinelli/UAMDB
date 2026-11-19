@@ -1,20 +1,9 @@
 import { useEffect, useState } from "react";
-import {ActivityIndicator,FlatList,Image,StyleSheet,Text,TextInput,View,} from "react-native";
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, View, } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../constants/Colors";
 import { searchMedia } from "../../api/Movie";
-
-type MediaResult = {
-    id: number;
-    media_type: "movie" | "tv" | "person";
-    title?: string;
-    name?: string;
-    poster_path?: string | null;
-    profile_path?: string | null;
-    known_for_department?: string;
-};
-
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // endpoint para montar imagem 
+import { MediaResult } from "../../types/MovieType";
 
 export default function Buscar() {
     const [nomeDigitado, setNomeDigitado] = useState("");
@@ -38,7 +27,7 @@ export default function Buscar() {
         setErro("");
 
 
-       // deboucing para quando o user digitar n fazer a req automaticamente
+        // deboucing para quando o user digitar n fazer a req automaticamente
         const timeout = setTimeout(async () => {
             try {
                 const data = await searchMedia(termo);
@@ -51,41 +40,19 @@ export default function Buscar() {
                     setErro("Não foi possível buscar. Tente novamente.");
                 }
             } finally {
-                if (efeitoAtivo) setCarregando(false);
+                if (efeitoAtivo) {
+                    setCarregando(false);
+                }
             }
         }, 450);
+        
+
 
         return () => {
             efeitoAtivo = false;
             clearTimeout(timeout);
         };
     }, [nomeDigitado]);
-
-    const renderizarMidia = ({ item }: { item: MediaResult }) => {
-        const nome = item.title ?? item.name ?? "Sem nome";
-        const caminhoImagem = item.media_type === "person" ? item.profile_path : item.poster_path;
-        return (
-            <View style={styles.card}>
-                <View style={styles.areaImagem}>
-                    {caminhoImagem ? (
-                        <Image
-                            source={{ uri: `${IMAGE_BASE_URL}${caminhoImagem}` }}
-                            style={styles.imagem}
-                            resizeMode="cover"
-                            accessibilityLabel={`Imagem de ${nome}`}
-                        />
-                    ) : (
-                        <View style={[styles.imagem, styles.semImagem]}>
-                            <Text style={styles.semImagemTexto}>Sem imagem</Text>
-                        </View>
-                    )}
-                </View>
-                <View style={styles.nomeFundo}>
-                    <Text style={styles.nome} numberOfLines={2}>{nome}</Text>
-                </View>
-            </View>
-        );
-    };
 
     return (
         <SafeAreaProvider>
@@ -105,16 +72,45 @@ export default function Buscar() {
                         accessibilityLabel="Pesquisar filmes, séries e pessoas"
                     />
                     {carregando && <ActivityIndicator style={styles.loading} />}
-                    {!!erro && <Text style={styles.mensagem}>{erro}</Text>}
+                    {erro && <Text style={styles.mensagem}>{erro}</Text>}
                     {!carregando && !erro && nomeDigitado.trim().length >= 2 && midiasBuscadas.length === 0 && (
                         <Text style={styles.mensagem}>Nenhum resultado encontrado.</Text>
                     )}
                     <FlatList
                         data={midiasBuscadas}
-                        renderItem={renderizarMidia}
+                        //funçao que recebe o item e renderiza na tela, equivale ao map
+                        renderItem={({ item }) => {
+                            const nome = item.title ?? item.name ?? "Sem nome";
+                            const caminhoImagem = item.media_type === "person" ? item.profile_path : item.poster_path;
+
+                            return (
+                                <View style={styles.card}>
+                                    <View style={styles.areaImagem}>
+                                        {caminhoImagem ? (
+                                            <Image
+                                                source={{ uri: `https://image.tmdb.org/t/p/w500/${caminhoImagem}` }}
+                                                style={styles.imagem}
+                                                resizeMode="cover"
+                                                accessibilityLabel={`Imagem de ${nome}`}
+                                            />
+                                        ) : (
+                                            <View style={[styles.imagem, styles.semImagem]}>
+                                                <Text style={styles.semImagemTexto}>Sem imagem</Text>
+                                            </View>
+                                        )}
+                                    </View>
+                                    <View style={styles.detalhes}>
+                                        <Text style={styles.nome} numberOfLines={2}>{nome}</Text>
+                                        <Text style={styles.descricao} numberOfLines={3}>
+                                            {item.media_type === "person"
+                                                ? item.known_for_department ?? "Pessoa"
+                                                : item.overview ?? "Descri��o indispon�vel."}
+                                        </Text>
+                                    </View>
+                                </View>
+                            );
+                        }}
                         keyExtractor={(item) => `${item.media_type}-${item.id}`}
-                        numColumns={2}
-                        columnWrapperStyle={styles.linha}
                         contentContainerStyle={styles.lista}
                         keyboardShouldPersistTaps="handled"
                     />
@@ -178,20 +174,20 @@ const styles = StyleSheet.create({
         paddingBottom: 24,
     },
     card: {
-        flex: 1,
-        backgroundColor: colors.surface,
-        borderRadius: 14,
-        overflow: "hidden",
-        marginBottom: 14,
-        elevation: 4,
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 12,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: colors.border,
     },
     areaImagem: {
-        width: "100%",
-        aspectRatio: 0.7,
+        width: 76,
+        height: 108,
+        borderRadius: 5,
+        overflow: "hidden",
         backgroundColor: colors.surface,
     },
     imagem: {
-        ...StyleSheet.absoluteFillObject,
         width: "100%",
         height: "100%",
     },
@@ -205,19 +201,21 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: "center",
     },
-    linha: {
-        gap: 12,
-    },
-    nomeFundo: {
-        minHeight: 52,
+    detalhes: {
+        flex: 1,
+        alignSelf: "stretch",
         justifyContent: "center",
-        paddingHorizontal: 10,
-        paddingVertical: 9,
-        backgroundColor: colors.surface,
+        paddingLeft: 14,
     },
     nome: {
         color: colors.text,
         fontSize: 15,
         fontWeight: "700",
+    },
+    descricao: {
+        color: colors.textSecondary,
+        fontSize: 13,
+        lineHeight: 18,
+        marginTop: 6,
     },
 });

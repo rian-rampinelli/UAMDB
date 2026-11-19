@@ -6,7 +6,6 @@ import colors from '../constants/Colors';
 export default function DrawerLayout() {
   return (
     <Drawer
-      
       screenOptions={{
         headerShown: true,
         headerStyle: {
